@@ -1,0 +1,5 @@
+build
+.idea
+.gradle
+/target/
+test-output/

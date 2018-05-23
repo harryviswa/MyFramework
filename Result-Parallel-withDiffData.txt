@@ -1,0 +1,124 @@
+[RemoteTestNG] detected TestNG version 6.14.2
+Starting ChromeDriver 2.38.552522 (437e6fbedfa8762dec75e2c5b3ddb86763dc9dcb) on port 13597
+Only local connections are allowed.
+Starting ChromeDriver 2.38.552522 (437e6fbedfa8762dec75e2c5b3ddb86763dc9dcb) on port 29633
+Only local connections are allowed.
+Starting ChromeDriver 2.38.552522 (437e6fbedfa8762dec75e2c5b3ddb86763dc9dcb) on port 2753
+Only local connections are allowed.
+Starting ChromeDriver 2.38.552522 (437e6fbedfa8762dec75e2c5b3ddb86763dc9dcb) on port 1078
+Only local connections are allowed.
+Starting ChromeDriver 2.38.552522 (437e6fbedfa8762dec75e2c5b3ddb86763dc9dcb) on port 27013
+Only local connections are allowed.
+org.openqa.selenium.remote.ProtocolHandshake createSession
+INFO: Detected dialect: OSS
+org.openqa.selenium.remote.ProtocolHandshake createSession
+INFO: Detected dialect: OSS
+org.openqa.selenium.remote.ProtocolHandshake createSession
+INFO: Detected dialect: OSS
+org.openqa.selenium.remote.ProtocolHandshake createSession
+INFO: Detected dialect: OSS
+org.openqa.selenium.remote.ProtocolHandshake createSession
+INFO: LAUNCHED URL: https://www.cleartrip.com/
+YOU ARE CURRENTLY IN CLEAR TRIP HOME PAGE
+INFO: LAUNCHED URL: https://www.cleartrip.com/
+YOU ARE CURRENTLY IN CLEAR TRIP HOME PAGE
+INFO: CLICKED ON ONE WAY
+INFO: CLEARED FROM-LOCATION
+INFO: CLICKED ON FROM-LOCATION
+INFO: ENTERED AND SELECTED Bang ON FROM-LOCATION
+INFO: CLEARED TO-LOCATION
+INFO: LAUNCHED URL: https://www.cleartrip.com/
+YOU ARE CURRENTLY IN CLEAR TRIP HOME PAGE
+INFO: CLICKED ON TO-LOCATION
+INFO: CLICKED ON YOUR TRIPS
+INFO: CLICKED ON SIGN IN
+YOU ARE CURRENTLY IN CLEAR TRIP SIGNIN PAGE
+INFO: LAUNCHED URL: https://www.cleartrip.com/
+YOU ARE CURRENTLY IN CLEAR TRIP HOME PAGE
+INFO: LAUNCHED URL: https://www.cleartrip.com/
+YOU ARE CURRENTLY IN CLEAR TRIP HOME PAGE
+INFO: ENTERED AND SELECTED Delhi ON TO-LOCATION
+INFO: CLICKED ON ONE WAY
+INFO: CLICKED ON DEPART DATE
+INFO: CLEARED FROM-LOCATION
+INFO: CLICKED ON FROM-LOCATION
+INFO: CLICKED ON HOTELS
+INFO: CLICKED ON 23
+INFO: SELECTED 23 FROM DEPART DATE
+INFO: YOU ARE CURRENTLY IN CLEAR TRIP HOTELS PAGE
+INFO: SWITCHED TO FRAME: modal_window
+INFO: CLICKED ON SEARCH
+INFO: CLICKED ON SIGN IN
+INFO: CLEARED LOCALITY SEARCH
+INFO: TEXT FOUND: Bangalore ? New Delhi
+Wed, 23 May | 1 adult
+INFO: Search Flight Testcase Successfully Executed
+INFO: ENTERED AND SELECTED Chennai ON FROM-LOCATION
+INFO: TEXT FOUND: There were errors in your submission
+Your username is a required field
+Your account password is a required field
+INFO: Testcase was successful
+INFO: CLICKED ON LOCALITY SEARCH
+INFO: CLEARED TO-LOCATION
+INFO: CLICKED ON TO-LOCATION
+INFO: ENTERED AND SELECTED Delhi ON TO-LOCATION
+INFO: ENTERED AND SELECTED Indiranagar, Bangalore ON LOCALITY SEARCH
+INFO: CLICKED ON DEPART DATE
+INFO: SELECTED 1 room, 2 adults FROM TRAVELLER INFO
+INFO: CLICKED ON CHECK IN DATE
+INFO: CLICKED ON 24
+INFO: SELECTED 24 FROM CHECK IN DATE
+INFO: CLICKED ON CHECK OUT DATE
+INFO: CLICKED ON 27
+INFO: SELECTED 27 FROM CHECK OUT DATE
+Starting ChromeDriver 2.38.552522 (437e6fbedfa8762dec75e2c5b3ddb86763dc9dcb) on port 13895
+Only local connections are allowed.
+INFO: CLICKED ON SEARCH
+INFO: CLICKED ON AVAILABLE DATE
+INFO: TEXT FOUND: Bangalore (3 nights)
+Thu, 24 May - Sun, 27 May | 1 room, 2 adults
+INFO: Search Hotel Testcase Successfully Executed
+INFO: SELECTED Any Available Date FROM DEPART DATE
+INFO: CLICKED ON HOTELS
+INFO: YOU ARE CURRENTLY IN CLEAR TRIP HOTELS PAGE
+INFO: CLICKED ON SEARCH
+INFO: CLEARED LOCALITY SEARCH
+INFO: TEXT FOUND: Chennai ? New Delhi
+Sun, 20 May | 1 adult
+INFO: Search Flight Testcase Successfully Executed
+INFO: CLICKED ON LOCALITY SEARCH
+May 20, 2018 1:03:32 AM org.openqa.selenium.remote.ProtocolHandshake createSession
+INFO: Detected dialect: OSS
+INFO: ENTERED AND SELECTED Indiranagar, Bangalore ON LOCALITY SEARCH
+INFO: SELECTED 1 room, 2 adults FROM TRAVELLER INFO
+INFO: CLICKED ON CHECK IN DATE
+INFO: CLICKED ON AVAILABLE DATE
+INFO: SELECTED Any Available Date FROM CHECK IN DATE
+INFO: CLICKED ON CHECK OUT DATE
+INFO: CLICKED ON AVAILABLE DATE
+INFO: SELECTED Any Available Date FROM CHECK OUT DATE
+INFO: CLICKED ON SEARCH
+INFO: TEXT FOUND: Bangalore (1 night)
+Sun, 20 May - Mon, 21 May | 1 room, 2 adults
+INFO: Search Hotel Testcase Successfully Executed
+INFO: LAUNCHED URL: https://www.cleartrip.com/
+YOU ARE CURRENTLY IN CLEAR TRIP HOME PAGE
+INFO: CLICKED ON ONE WAY
+INFO: CLEARED FROM-LOCATION
+INFO: CLICKED ON FROM-LOCATION
+INFO: ENTERED AND SELECTED Delhi ON FROM-LOCATION
+INFO: CLEARED TO-LOCATION
+INFO: CLICKED ON TO-LOCATION
+INFO: ENTERED AND SELECTED Bangalore ON TO-LOCATION
+INFO: CLICKED ON DEPART DATE
+INFO: CLICKED ON 18
+INFO: SELECTED 18 FROM DEPART DATE
+INFO: CLICKED ON SEARCH
+INFO: TEXT FOUND: New Delhi ? Bangalore
+Mon, 18 Jun | 1 adult
+INFO: Search Flight Testcase Successfully Executed
+
+===============================================
+BasicSuite
+Total tests run: 6, Failures: 0, Skips: 0
+===============================================
