@@ -1,6 +1,8 @@
 package com.apps.base;
 
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.sql.Timestamp;
 
 import org.apache.commons.io.FileUtils;
@@ -8,6 +10,8 @@ import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -19,30 +23,43 @@ import com.sun.javafx.PlatformUtil;
 @SuppressWarnings("restriction")
 public abstract class CommonTestBase {
 
-	public static ThreadLocal<WebDriver> localDriver=new ThreadLocal<WebDriver>();
+	public static ThreadLocal<RemoteWebDriver> localDriver=new ThreadLocal<RemoteWebDriver>();
 
 	@BeforeMethod
 	@Parameters({"browserToUse"})
 	public void initDrivers(@Optional("chrome") String strBrowserToUse) {
 		setDriverPath();
+		System.out.println("BROWSER TYPE: "+strBrowserToUse);
 		switch (strBrowserToUse.toLowerCase())
 		{
 		case "firefox":
+			try {
+				localDriver.set(new RemoteWebDriver(new URL("http://192.168.99.100:4444/wd/hub"), DesiredCapabilities.firefox()));
+			} catch (MalformedURLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			break;
 		case "chrome":
 		default:
-			ChromeDriver driverToUse=new ChromeDriver();
-			localDriver.set(driverToUse);
+			//ChromeDriver driverToUse=new ChromeDriver();
+			try {
+				localDriver.set(new RemoteWebDriver(new URL("http://192.168.99.100:4444/wd/hub"), DesiredCapabilities.chrome()));
+			} catch (MalformedURLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			break;
 		}
 		getDriver().manage().deleteAllCookies();
-		getDriver().manage().window().maximize();
+		//getDriver().manage().window().maximize();
 	}
 
-	public WebDriver getDriver() {
+	public RemoteWebDriver getDriver() {
 		return localDriver.get();
 	}
 
-	public void setDriver(WebDriver driverToUse) {
+	public void setDriver(RemoteWebDriver driverToUse) {
 		localDriver.set(driverToUse);
 	}
 
