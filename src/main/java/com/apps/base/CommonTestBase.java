@@ -7,6 +7,7 @@ import java.sql.Timestamp;
 
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
+import org.openqa.selenium.Platform;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -17,8 +18,6 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
-
-import com.sun.javafx.PlatformUtil;
 
 @SuppressWarnings("restriction")
 public abstract class CommonTestBase {
@@ -64,13 +63,13 @@ public abstract class CommonTestBase {
 	}
 
 	private void setDriverPath() {
-		if (PlatformUtil.isMac()) {
+		if (Platform.MAC != null) {
 			System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir")+"/src/main/resources/libs/chromedriver");
 		}
-		if (PlatformUtil.isWindows()) {
+		if (Platform.WINDOWS != null) {
 			System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir")+"/src/main/resources/libs/chromedriver.exe");
 		}
-		if (PlatformUtil.isLinux()) {
+		if (Platform.LINUX != null) {
 			System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir")+"/src/main/resources/libs/chromedriver_linux");
 		}
 	}
