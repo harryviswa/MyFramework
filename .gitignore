@@ -3,3 +3,4 @@ build
 .gradle
 /target/
 test-output/
+allure-results/

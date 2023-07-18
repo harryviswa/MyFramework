@@ -5,7 +5,7 @@ import org.testng.annotations.DataProvider;
 public class TestData {
 
 
-	@DataProvider(name = "HotelBooking",parallel=true)
+	@DataProvider(name = "HotelBooking",parallel=false)
 	  public static Object[][] hotelBooking() {
 	        return new Object[][] { 
 	        	{ "Indiranagar, Bangalore","Any available","Any available" }, 
@@ -14,7 +14,7 @@ public class TestData {
 	  }
 	
 	
-	@DataProvider(name = "FlightBooking",parallel=true)
+	@DataProvider(name = "FlightBooking",parallel=false)
 	  public static Object[][] flightBooking() {
 	        return new Object[][] { 
 	        	{ "Bang", "Delhi","23" }, 
