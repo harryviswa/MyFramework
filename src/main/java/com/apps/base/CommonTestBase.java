@@ -1,6 +1,11 @@
 package com.apps.base;
 
 import java.util.Base64;
+
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 import org.junit.Assert;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.PageLoadStrategy;
@@ -13,8 +18,6 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testng.ITestContext;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
@@ -37,8 +40,12 @@ public abstract class CommonTestBase {
 	public static ExtentReports reports = new ExtentReports();
 	public static ThreadLocal<ExtentTest> tests=new ThreadLocal<ExtentTest>();
 	ExtentSparkReporter spark = new ExtentSparkReporter("SparkExtent.html");
-	public static final Logger log = LoggerFactory.getLogger(CommonTestBase.class);
+	public static final Logger log = LogManager.getLogger(CommonTestBase.class);
 	
+	static {
+		PropertyConfigurator.configure(System.getProperty("user.dir") +"/log4j.properties");
+		BasicConfigurator.configure();
+	}
 	
 	@BeforeMethod
 	@Parameters({"browserToUse"})
@@ -59,6 +66,7 @@ public abstract class CommonTestBase {
 			FirefoxOptions fxoptions =new FirefoxOptions();
 			fxoptions.setCapability(CapabilityType.ACCEPT_INSECURE_CERTS, true);
 			fxoptions.setCapability(CapabilityType.PAGE_LOAD_STRATEGY, PageLoadStrategy.NORMAL);
+			fxoptions.addArguments("-headless");
 			setDriver(new FirefoxDriver(fxoptions));
 		
 		}
@@ -71,7 +79,6 @@ public abstract class CommonTestBase {
 	
 	@BeforeClass
 	public void entryConfig(ITestContext context) {
-		System.setProperty("log4j.configurationFile",System.getProperty("user.dir") + "/log4j.xml");
 		reports.attachReporter(spark);
 		tests.set(reports.createTest(context.getName()));
 	}
@@ -106,7 +113,8 @@ public abstract class CommonTestBase {
 	public void consoleOutput(String strInfo) {
 		if(tests.get()!=null)
 		tests.get().log(Status.INFO, strInfo);
-		log.debug(strInfo);
+		System.out.println(strInfo);
+		log.info(strInfo);
 	}
 	
 	public void assertStep(boolean bSuccess,String validationInfo) {
