@@ -2,8 +2,9 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="BasicSuite" parallel="methods"
 	data-provider-thread-count="1">
-	<test thread-count="1" name="MainTest">
+	<test thread-count="2" name="Search Test">
 		<parameter name="browserToUse" value="firefox"></parameter>
+		<parameter name="grid" value="true"></parameter>
 		<classes>
 			<class name="com.apps.trial.tests.TrailTest" />
 		</classes>

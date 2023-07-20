@@ -2,6 +2,8 @@ package com.apps.datadrivers;
 
 import org.testng.annotations.DataProvider;
 
+import com.apps.utils.ExcelUtils;
+
 public class TestData {
 
 
@@ -22,5 +24,11 @@ public class TestData {
 	        	{ "Delhi", "Bangalore","18" }
 	        };
 	  }
+	
+	
+	@DataProvider(name = "TrailData",parallel=false)
+	  public static Object[][] trailData() throws Exception {
+	        return ExcelUtils.getTableArray();
+	   }
 
 }

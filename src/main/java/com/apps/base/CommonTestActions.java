@@ -71,10 +71,10 @@ public class CommonTestActions extends CommonTestBase {
 	
 	public void optionalClick(String strXPath, String strInfo) {
 		try {
-			findWebElement(By.xpath(strXPath)).click();
+			findWebElement(strXPath).click();
 			consoleOutput("Optional click on "+strInfo.toUpperCase());
 		}catch(Exception e) {
-			e.printStackTrace();
+			consoleOutput("Ignored: Optional click on "+strInfo.toUpperCase());
 		}
 	}
 	
