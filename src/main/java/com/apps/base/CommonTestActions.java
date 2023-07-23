@@ -4,11 +4,15 @@ import java.time.Duration;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.ElementClickInterceptedException;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class CommonTestActions extends CommonTestBase {
@@ -94,9 +98,10 @@ public class CommonTestActions extends CommonTestBase {
 		captureScreenshot();
 		try {
 			syncFor(webElement,5);
-			webElement.click();
+			Actions act=new Actions(getDriver());
+			act.moveToElement(webElement).click().build().perform();
 			consoleOutput("Clicked on "+strInfo.toUpperCase());
-			waitFor(100);
+			//waitFor(100);
 		}catch(Exception e) {
 			e.printStackTrace();
 			throwError("Unable to click "+strInfo);
@@ -133,7 +138,7 @@ public class CommonTestActions extends CommonTestBase {
 			clear(webElement,strInfo);
 			click(webElement,strInfo);
 			webElement.sendKeys(strTextToEnter);
-			findWebElements(By.xpath("//ul[contains(@style,'display: block')]/li/a")).get(0).click();
+			findWebElements(By.xpath("//*[(text()='"+strTextToEnter+"')]/ancestor::li[contains(@class,'highlight') or contains(@class,'active')]")).get(0).click();
 			consoleOutput("ENTERED AND SELECTED "+strTextToEnter+" ON "+strInfo.toUpperCase().toUpperCase());
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -220,8 +225,14 @@ public class CommonTestActions extends CommonTestBase {
 		new Select(webElement).selectByVisibleText(strTextToSelect);
 		consoleOutput("SELECTED "+strTextToSelect+" FROM "+ strInfo.toUpperCase());
 	}
+	
+	public void selectByIndex(WebElement webElement,int index,String strInfo) {
+		syncFor(webElement,5);
+		new Select(webElement).selectByIndex(index);
+		consoleOutput("SELECTED "+index+" FROM "+ strInfo.toUpperCase());
+	}
 
-	public void selectDate(WebElement webElement,String strDateToSelect,String strInfo) {
+	public void selectDate_customToApp(WebElement webElement,String strDateToSelect,String strInfo) {
 
 		click(webElement,strInfo);
 		//Look whether its an integer and non empty
@@ -241,11 +252,9 @@ public class CommonTestActions extends CommonTestBase {
 		consoleOutput("Selected "+strDateToSelect+" from "+ strInfo.toUpperCase());
 	}
 
-
-
 	public void syncFor(WebElement webElement) {
 		try {
-			new WebDriverWait(getDriver(), Duration.ofSeconds(GLOBAL_SYNC_WAIT_TIME)).until(ExpectedConditions.elementToBeClickable(webElement));
+			new WebDriverWait(getDriver(),Duration.ofSeconds(GLOBAL_SYNC_WAIT_TIME)).until(ExpectedConditions.elementToBeClickable(webElement));			
 		}catch(Exception e) {}
 	}
 

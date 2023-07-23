@@ -4,7 +4,7 @@
 	data-provider-thread-count="1">
 	<test thread-count="2" name="Search Test">
 		<parameter name="browserToUse" value="firefox"></parameter>
-		<parameter name="grid" value="true"></parameter>
+		<parameter name="grid" value="false"></parameter>
 		<classes>
 			<class name="com.apps.trial.tests.TrailTest" />
 		</classes>

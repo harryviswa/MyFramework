@@ -19,8 +19,8 @@ public class TrailHomePage extends CommonTestActions {
 	@FindBys(@FindBy(xpath="//img[@alt='Emirates logo']"))
 	List<WebElement> lst_logo;
 	
-	@FindBy(xpath="//a[contains(string(),'Learn more Check-in to Earn tier miles')]")
-	WebElement lnk_header_learnmore;
+	@FindBy(xpath="//a[contains(string(),'Search flights') and not(contains(@style,'display: none'))]")
+	WebElement tab_searchFlight;
 	
 	public TrailHomePage() {
 		PageFactory.initElements(new AjaxElementLocatorFactory(getDriver(),40), this);
@@ -32,7 +32,7 @@ public class TrailHomePage extends CommonTestActions {
 	@Step("Click on search flight")
 	public void clickSearchFlight() {
 		assertStep(lst_logo.size()>0,"Home page validation");
-		assertStep(lnk_header_learnmore.isDisplayed(),"Landing page header validations");
+		assertStep(tab_searchFlight.isDisplayed(),"Landing page element validations");
 		click(lnk_book, "Book");
 		moveToElementAndClick("//i[contains(text(),'Search for a flight')]/../..","Select Menu Item");
 		assertStep(isWebElementPresent("//h1[(text()='Book a flight')]"),"Header Validation");

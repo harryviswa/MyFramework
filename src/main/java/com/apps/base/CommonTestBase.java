@@ -1,5 +1,7 @@
 package com.apps.base;
 
+import static org.testng.Assert.assertEquals;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Base64;
@@ -48,7 +50,7 @@ public abstract class CommonTestBase {
 	protected TestContext tcm;
 	
 	static {
-		PropertyConfigurator.configure(System.getProperty("user.dir") +"/log4j.properties");
+		PropertyConfigurator.configure(System.getProperty("user.dir") +"/src/main/resources/log4j.properties");
 		BasicConfigurator.configure();
 	}
 	
@@ -57,7 +59,9 @@ public abstract class CommonTestBase {
 	public void initDrivers(ITestContext context, @Optional("firefox") String strBrowserToUse) throws MalformedURLException {
 		setDriverPath();
 		tcm=new TestContext(); 
+		if(context.getCurrentXmlTest().getAllParameters().containsKey("grid"))
 		seleniumGrid=Boolean.parseBoolean(context.getCurrentXmlTest().getAllParameters().get("grid").toString());
+		consoleOutput("\n\n========================================");
 		consoleOutput("Browser Type: "+strBrowserToUse +" | Selenium Grid: "+seleniumGrid);
 		
 		switch(strBrowserToUse) {
@@ -76,7 +80,7 @@ public abstract class CommonTestBase {
 			fxoptions.setCapability(CapabilityType.ACCEPT_INSECURE_CERTS, true);
 			fxoptions.setCapability(CapabilityType.PAGE_LOAD_STRATEGY, PageLoadStrategy.NORMAL);
 			//fxoptions.addArguments("-headless");
-			setDriver(seleniumGrid?(new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), fxoptions)):(new FirefoxDriver(fxoptions)));
+			setDriver(seleniumGrid?(new RemoteWebDriver(new URL("http://localhost:4444"), fxoptions)):(new FirefoxDriver(fxoptions)));
 		
 		}
 		getDriver().manage().deleteAllCookies();
@@ -111,13 +115,13 @@ public abstract class CommonTestBase {
 	public void consoleOutput(String strInfo) {
 		if(tests.get()!=null)
 		tests.get().log(Status.INFO, strInfo);
-		System.out.println(strInfo);
 		log.info(strInfo);
 	}
 	
 	public void assertStep(boolean bSuccess,String validationInfo) {
 		captureScreenshot();
 		tests.get().log(bSuccess?Status.PASS:Status.FAIL, validationInfo);
+		assertEquals(bSuccess, true);
 	}
 
 	@AfterMethod
