@@ -11,6 +11,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.junit.Assert;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.Platform;
@@ -52,18 +53,16 @@ public abstract class CommonTestBase {
 	static {
 		PropertyConfigurator.configure(System.getProperty("user.dir") +"/src/main/resources/log4j.properties");
 		BasicConfigurator.configure();
+		setDriverPath();
 	}
 	
 	@BeforeMethod
 	@Parameters({"browserToUse"})
 	public void initDrivers(ITestContext context, @Optional("firefox") String strBrowserToUse) throws MalformedURLException {
-		setDriverPath();
 		tcm=new TestContext(); 
 		if(context.getCurrentXmlTest().getAllParameters().containsKey("grid"))
 		seleniumGrid=Boolean.parseBoolean(context.getCurrentXmlTest().getAllParameters().get("grid").toString());
-		consoleOutput("\n\n========================================");
-		consoleOutput("Browser Type: "+strBrowserToUse +" | Selenium Grid: "+seleniumGrid);
-		
+			
 		switch(strBrowserToUse) {
 		case "chrome":
 			ChromeOptions options =new ChromeOptions();
@@ -80,13 +79,11 @@ public abstract class CommonTestBase {
 			fxoptions.setCapability(CapabilityType.ACCEPT_INSECURE_CERTS, true);
 			fxoptions.setCapability(CapabilityType.PAGE_LOAD_STRATEGY, PageLoadStrategy.NORMAL);
 			//fxoptions.addArguments("-headless");
-			setDriver(seleniumGrid?(new RemoteWebDriver(new URL("http://localhost:4444"), fxoptions)):(new FirefoxDriver(fxoptions)));
+			setDriver(seleniumGrid?(new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), fxoptions)):(new FirefoxDriver(fxoptions)));
 		
 		}
 		getDriver().manage().deleteAllCookies();
 		getDriver().manage().window().maximize();
-		
-		consoleOutput("Landing page loaded successfully");
 	}
 	
 	@BeforeClass
@@ -98,11 +95,16 @@ public abstract class CommonTestBase {
 		return localDriver.get();
 	}
 
+	public void resetZoomLevel() {
+		JavascriptExecutor js=(JavascriptExecutor)getDriver(); 
+		js.executeScript("document.body.style.zoom='100%'");
+	}
+	
 	public void setDriver(RemoteWebDriver driverToUse) {
 		localDriver.set(driverToUse);
 	}
 
-	private void setDriverPath() {
+	private static void setDriverPath() {
 		System.setProperty("webdriver.http.factory", "jdk-http-client");
 		System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir")+"/src/main/resources/libs/chromedriver");
 		reports.setUsingNaturalConf(true);	

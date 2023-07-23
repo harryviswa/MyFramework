@@ -32,13 +32,13 @@ public class TrialGoogle extends CommonTestActions {
 	}
 
 	@Step("Search in google search bar")
-	public void googleSearch() {
+	public void googleSearch(String searchterm) {
 		assertStep(lst_logo.size()>0,"Home page validation");
 		optionalClick("//a[text()='English']","Switch Language");
-		type(txt_search, "LinkedIn hariharan-viswanathan-a6343329", "Google search text");
+		type(txt_search,searchterm, "Google search text: "+searchterm);
 		click(btn_search.get(0), "Google Search");
 		consoleOutput("Total Search Results: "+lst_searchResults.size());
-		assertStep(lst_searchResults.get(0).getText().contains("Hariharan Viswanathan"),"Search list value");
+		//assertStep(lst_searchResults.get(0).getText().contains("Hariharan Viswanathan"),"Search list value");
 		click(lst_searchResults.get(0),"Click on the first link");
 		captureScreenshot();
 	}

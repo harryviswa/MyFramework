@@ -14,6 +14,9 @@ public class TestContext extends CommonTestBase {
 	public void setTestcaseNameInReports(String testcaseName) {
 		setTestcaseName(testcaseName);
 		tests.set(reports.createTest(testcaseName));
+		consoleOutput("\n\n========================================");
+		consoleOutput("Selenium Grid: "+seleniumGrid);
+	
 	}
 
 }

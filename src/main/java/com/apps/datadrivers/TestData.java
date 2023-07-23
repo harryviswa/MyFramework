@@ -6,16 +6,6 @@ import com.apps.utils.ExcelUtils;
 
 public class TestData {
 
-
-	@DataProvider(name = "HotelBooking",parallel=false)
-	  public static Object[][] hotelBooking() {
-	        return new Object[][] { 
-	        	{ "Indiranagar, Bangalore","Any available","Any available" }, 
-	        	{ "Indiranagar, Bangalore","24","27" }
-	        };
-	  }
-	
-	
 	@DataProvider(name = "FlightBooking",parallel=false)
 	  public static Object[][] flightBooking() {
 	        return new Object[][] { 
@@ -26,9 +16,9 @@ public class TestData {
 	  }
 	
 	
-	@DataProvider(name = "TrailData",parallel=false)
+	@DataProvider(name = "GoogleData",parallel=true)
 	  public static Object[][] trailData() throws Exception {
-	        return ExcelUtils.getTableArray();
+	        return ExcelUtils.getExcelAsObjects("google");
 	   }
 
 }

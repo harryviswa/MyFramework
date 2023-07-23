@@ -4,15 +4,11 @@ import java.time.Duration;
 import java.util.List;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.ElementClickInterceptedException;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class CommonTestActions extends CommonTestBase {
@@ -98,10 +94,8 @@ public class CommonTestActions extends CommonTestBase {
 		captureScreenshot();
 		try {
 			syncFor(webElement,5);
-			Actions act=new Actions(getDriver());
-			act.moveToElement(webElement).click().build().perform();
+			webElement.click();
 			consoleOutput("Clicked on "+strInfo.toUpperCase());
-			//waitFor(100);
 		}catch(Exception e) {
 			e.printStackTrace();
 			throwError("Unable to click "+strInfo);
@@ -136,7 +130,7 @@ public class CommonTestActions extends CommonTestBase {
 		try {
 			syncFor(webElement);
 			clear(webElement,strInfo);
-			click(webElement,strInfo);
+			moveToElementAndClick(webElement,strInfo);
 			webElement.sendKeys(strTextToEnter);
 			findWebElements(By.xpath("//*[(text()='"+strTextToEnter+"')]/ancestor::li[contains(@class,'highlight') or contains(@class,'active')]")).get(0).click();
 			consoleOutput("ENTERED AND SELECTED "+strTextToEnter+" ON "+strInfo.toUpperCase().toUpperCase());
@@ -150,6 +144,7 @@ public class CommonTestActions extends CommonTestBase {
 	public boolean launch(String strURL) {
 		try {
 			getDriver().get(strURL);
+			//resetZoomLevel();
 			consoleOutput("Launched Url: "+strURL);
 			return true;
 		}catch(Exception e) {

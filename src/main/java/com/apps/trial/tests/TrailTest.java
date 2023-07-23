@@ -1,4 +1,6 @@
 package com.apps.trial.tests;
+import java.util.LinkedHashMap;
+
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import com.apps.base.CommonTestActions;
@@ -22,13 +24,13 @@ public class TrailTest extends CommonTestActions {
     }
     
     
-    @Test(testName = "Google home page search", enabled=false)
+    @Test(testName = "Google home page search", dataProvider="GoogleData", dataProviderClass = com.apps.datadrivers.TestData.class)
     @Description("Search google with some text")
-    public void searchGoogle() {
-    	tcm.setTestcaseNameInReports("Google home page search");
-    	launch("https://www.google.com/");
+    public void searchGoogle(LinkedHashMap<String,String> data) {
+    	tcm.setTestcaseNameInReports(data.get("TestcaseName"));
+    	launch(data.get("Url"));
     	TrialGoogle hp=new TrialGoogle();
-    	hp.googleSearch();
+    	hp.googleSearch(data.get("SearchTerms"));
     }
     
     
