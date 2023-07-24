@@ -1,28 +1,23 @@
 package com.apps.base;
 
+import java.time.Duration;
 import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-@SuppressWarnings("serial")
-class bookingException extends TimeoutException{
-	public bookingException(String strErrorMessage) {
-		super(strErrorMessage);
-	}
-}
-
 public class CommonTestActions extends CommonTestBase {
 
-	final int GLOBAL_SYNC_WAIT_TIME=5;
+	final int GLOBAL_SYNC_WAIT_TIME=8;
 
 	public void waitFor(int durationInMilliSeconds) {
 		try {
+			consoleOutput("Wait for "+durationInMilliSeconds+"ms");
 			Thread.sleep(durationInMilliSeconds);
 		} catch (InterruptedException e) {
 			e.printStackTrace(); 
@@ -40,7 +35,7 @@ public class CommonTestActions extends CommonTestBase {
 	}
 
 	public List<WebElement> findWebElements(By byInfo) {
-		new WebDriverWait(getDriver(), GLOBAL_SYNC_WAIT_TIME+10).until(ExpectedConditions.visibilityOfAllElementsLocatedBy(byInfo));
+		new WebDriverWait(getDriver(),Duration.ofSeconds( GLOBAL_SYNC_WAIT_TIME+10)).until(ExpectedConditions.visibilityOfAllElementsLocatedBy(byInfo));
 		return getDriver().findElements(byInfo);
 	}
 
@@ -54,39 +49,65 @@ public class CommonTestActions extends CommonTestBase {
 		try {
 			syncFor(webElement,5);
 			strTextFound=webElement.getText();
-			consoleOutput("TEXT FOUND: "+strTextFound);
+			consoleOutput("Text found: "+strTextFound);
 		}catch(Exception e) {}
 		return strTextFound;
 	}
 
-	public boolean click(By byInfo, String strInfo) {
+	public void click(By byInfo, String strInfo) {
+		captureScreenshot();
 		try {
 			findWebElement(byInfo).click();
-			consoleOutput("CLICKED ON "+strInfo.toUpperCase());
-			return true;
+			consoleOutput("Clicked on "+strInfo.toUpperCase());
 		}catch(Exception e) {
 			e.printStackTrace();
+			throwError("Unable to click on "+strInfo);
 		}
-		return false;
 	}
 
-	public boolean click(String strXPath, String strInfo) {
+	public void click(String strXPath, String strInfo) {
+		click(By.xpath(strXPath),strInfo);
+	}
+	
+	public void optionalClick(String strXPath, String strInfo) {
 		try {
-			syncFor(By.xpath(strXPath));
-			findWebElement(By.xpath(strXPath)).click();
-			consoleOutput("CLICKED ON "+strInfo.toUpperCase());
-			return true;
+			findWebElement(strXPath).click();
+			consoleOutput("Optional click on "+strInfo.toUpperCase());
+		}catch(Exception e) {
+			consoleOutput("Ignored: Optional click on "+strInfo.toUpperCase());
+		}
+	}
+	
+	public void moveToElementAndClick(WebElement ele,String info) {
+		((JavascriptExecutor)getDriver()).executeScript("arguments[0].scrollIntoView();", ele);
+		Actions act=new Actions(getDriver());
+		act.moveToElement(ele, 2, 2);
+		act.click(ele);
+		act.build().perform();
+		assertStep(true, info);
+	}
+	
+	public void moveToElementAndClick(String xPath,String info) {
+		moveToElementAndClick(findWebElement(xPath),info);
+	}
+	
+	public void click(WebElement webElement, String strInfo) {
+		captureScreenshot();
+		try {
+			syncFor(webElement,5);
+			webElement.click();
+			consoleOutput("Clicked on "+strInfo.toUpperCase());
 		}catch(Exception e) {
 			e.printStackTrace();
+			throwError("Unable to click "+strInfo);
 		}
-		return false;
 	}
 
 	public boolean clear(WebElement webElement, String strInfo) {
 		try {
 			syncFor(webElement);
 			webElement.clear();
-			consoleOutput("CLEARED "+strInfo.toUpperCase());
+			consoleOutput("Cleared "+strInfo.toUpperCase());
 			return true;
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -94,51 +115,38 @@ public class CommonTestActions extends CommonTestBase {
 		return false;
 	}
 
-	public boolean type(WebElement webElement,String strTextToEnter, String strInfo) {
+	public void type(WebElement webElement,String strTextToEnter, String strInfo) {
 		try {
 			syncFor(webElement);
 			clear(webElement,strInfo.toUpperCase());
 			webElement.sendKeys(strTextToEnter);
-			consoleOutput("ENTERED "+strTextToEnter+" ON "+strInfo.toUpperCase());
-			return true;
+			consoleOutput("Entered "+strTextToEnter+" ON "+strInfo.toUpperCase());
 		}catch(Exception e) {
-			//e.printStackTrace();
+			e.printStackTrace();
+			throwError("Unable to enter the details");
 		}
-		return false;
 	}
 
-	public boolean typeAndSelect(WebElement webElement,String strTextToEnter, String strInfo) {
+	public void typeAndSelect(WebElement webElement,String strTextToEnter, String strInfo) {
 		try {
 			syncFor(webElement);
 			clear(webElement,strInfo);
-			click(webElement,strInfo);
+			moveToElementAndClick(webElement,strInfo);
 			webElement.sendKeys(strTextToEnter);
-			findWebElements(By.xpath("//ul[contains(@style,'display: block')]/li/a")).get(0).click();
+			findWebElements(By.xpath("//*[(text()='"+strTextToEnter+"')]/ancestor::li[contains(@class,'highlight') or contains(@class,'active')]")).get(0).click();
 			consoleOutput("ENTERED AND SELECTED "+strTextToEnter+" ON "+strInfo.toUpperCase().toUpperCase());
-			return true;
-		}catch(Exception e) {
-			//e.printStackTrace();
-		}
-		return false;
-	}
-
-	public boolean click(WebElement webElement, String strInfo) {
-		try {
-			syncFor(webElement,5);
-			webElement.click();
-			consoleOutput("CLICKED ON "+strInfo.toUpperCase());
-			waitFor(100);
-			return true;
 		}catch(Exception e) {
 			e.printStackTrace();
+			throwError("Unable to type and select the details");
 		}
-		return false;
 	}
+
 
 	public boolean launch(String strURL) {
 		try {
 			getDriver().get(strURL);
-			consoleOutput("LAUNCHED URL: "+strURL);
+			//resetZoomLevel();
+			consoleOutput("Launched Url: "+strURL);
 			return true;
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -152,7 +160,7 @@ public class CommonTestActions extends CommonTestBase {
 		syncFor(By.id(strID),10);
 		if(isWebElementPresent(By.id(strID))) {
 			getDriver().switchTo().frame(strID);
-			consoleOutput("SWITCHED TO FRAME: "+strID);
+			consoleOutput("Switched to frame: "+strID);
 			pageLoadWait();
 		}
 		else
@@ -165,7 +173,7 @@ public class CommonTestActions extends CommonTestBase {
 
 	public boolean isWebElementPresent(String strXpath) {
 		try {
-			new WebDriverWait(getDriver(),GLOBAL_SYNC_WAIT_TIME).until(ExpectedConditions.presenceOfElementLocated(By.xpath(strXpath)));
+			new WebDriverWait(getDriver(),Duration.ofSeconds( GLOBAL_SYNC_WAIT_TIME)).until(ExpectedConditions.presenceOfElementLocated(By.xpath(strXpath)));
 			if(findWebElement(By.xpath(strXpath)).isEnabled())
 				return true;
 		}catch(Exception e) {}
@@ -174,7 +182,7 @@ public class CommonTestActions extends CommonTestBase {
 
 	public boolean isWebElementPresent(By byInfo) {
 		try {
-			new WebDriverWait(getDriver(),GLOBAL_SYNC_WAIT_TIME+5).until(ExpectedConditions.presenceOfElementLocated(byInfo));
+			new WebDriverWait(getDriver(),Duration.ofSeconds( GLOBAL_SYNC_WAIT_TIME+5)).until(ExpectedConditions.presenceOfElementLocated(byInfo));
 			if(findWebElement(byInfo).isEnabled())
 				return true;
 		}catch(Exception e) {}
@@ -183,7 +191,7 @@ public class CommonTestActions extends CommonTestBase {
 
 	public boolean isWebElementPresent(String strXpath, int iTimeOut) {
 		try {
-			new WebDriverWait(getDriver(),iTimeOut).until(ExpectedConditions.presenceOfElementLocated(By.xpath(strXpath)));
+			new WebDriverWait(getDriver(),Duration.ofSeconds(iTimeOut)).until(ExpectedConditions.presenceOfElementLocated(By.xpath(strXpath)));
 			if(findWebElement(By.xpath(strXpath)).isEnabled())
 				return true;
 		}catch(Exception e) {}
@@ -192,7 +200,7 @@ public class CommonTestActions extends CommonTestBase {
 
 	public boolean isWebElementPresent(WebElement webElement) {
 		try {
-			new WebDriverWait(getDriver(),GLOBAL_SYNC_WAIT_TIME).until(ExpectedConditions.visibilityOf(webElement));
+			new WebDriverWait(getDriver(),Duration.ofSeconds(GLOBAL_SYNC_WAIT_TIME)).until(ExpectedConditions.visibilityOf(webElement));
 			if(webElement.isEnabled())
 				return true;
 		}catch(Exception e) {}
@@ -201,7 +209,7 @@ public class CommonTestActions extends CommonTestBase {
 
 	public boolean isWebElementPresent(WebElement webElement, int iTimeOut) {
 		try {
-			new WebDriverWait(getDriver(),iTimeOut).until(ExpectedConditions.visibilityOf(webElement));
+			new WebDriverWait(getDriver(),Duration.ofSeconds(iTimeOut)).until(ExpectedConditions.visibilityOf(webElement));
 			if(webElement.isEnabled())
 				return true;
 		}catch(Exception e) {}
@@ -213,17 +221,22 @@ public class CommonTestActions extends CommonTestBase {
 		new Select(webElement).selectByVisibleText(strTextToSelect);
 		consoleOutput("SELECTED "+strTextToSelect+" FROM "+ strInfo.toUpperCase());
 	}
+	
+	public void selectByIndex(WebElement webElement,int index,String strInfo) {
+		syncFor(webElement,5);
+		new Select(webElement).selectByIndex(index);
+		consoleOutput("SELECTED "+index+" FROM "+ strInfo.toUpperCase());
+	}
 
-	public void selectDate(WebElement webElement,String strDateToSelect,String strInfo) {
+	public void selectDate_customToApp(WebElement webElement,String strDateToSelect,String strInfo) {
 
 		click(webElement,strInfo);
-
 		//Look whether its an integer and non empty
 		if((strDateToSelect.matches("-?\\d+") || !strDateToSelect.equals(""))) {
 			//If it is present it will select the date
 			if(isWebElementPresent("//a[contains(@class,'ui-state-default') and not(@class='ui-state-default') and text()='"+strDateToSelect+"']",1)) {
 				click("//a[contains(@class,'ui-state-default') and not(@class='ui-state-default') and text()='"+strDateToSelect+"']",strDateToSelect);
-				consoleOutput("SELECTED "+strDateToSelect+" FROM "+ strInfo.toUpperCase());
+				consoleOutput("Selected "+strDateToSelect+" FROM "+ strInfo.toUpperCase());
 				return;
 			}
 		}
@@ -232,44 +245,36 @@ public class CommonTestActions extends CommonTestBase {
 		strDateToSelect="Any Available Date";
 		click(findWebElements(By.xpath("//a[contains(@class,'ui-state-default') and not(@class='ui-state-default')]")).get(0),"Available Date");
 
-		consoleOutput("SELECTED "+strDateToSelect+" FROM "+ strInfo.toUpperCase());
-	}
-
-	public void throwError(String strError) {
-		throw new bookingException(strError);
-	}
-
-	public void consoleOutput(String strInfo) {
-		System.out.println("INFO: "+strInfo);
+		consoleOutput("Selected "+strDateToSelect+" from "+ strInfo.toUpperCase());
 	}
 
 	public void syncFor(WebElement webElement) {
 		try {
-			new WebDriverWait(getDriver(), GLOBAL_SYNC_WAIT_TIME).until(ExpectedConditions.elementToBeClickable(webElement));
+			new WebDriverWait(getDriver(),Duration.ofSeconds(GLOBAL_SYNC_WAIT_TIME)).until(ExpectedConditions.elementToBeClickable(webElement));			
 		}catch(Exception e) {}
 	}
 
 	public void syncFor(By byInfo) {
 		try {
-			new WebDriverWait(getDriver(), GLOBAL_SYNC_WAIT_TIME).until(ExpectedConditions.elementToBeClickable(byInfo));
+			new WebDriverWait(getDriver(), Duration.ofSeconds(GLOBAL_SYNC_WAIT_TIME)).until(ExpectedConditions.elementToBeClickable(byInfo));
 		}catch(Exception e) {}
 	}
 
 	public void syncFor(By byInfo,int iAdditionalTimeoutInSeconds) {
 		try {
-			new WebDriverWait(getDriver(), GLOBAL_SYNC_WAIT_TIME+iAdditionalTimeoutInSeconds).until(ExpectedConditions.elementToBeClickable(byInfo));
+			new WebDriverWait(getDriver(), Duration.ofSeconds(GLOBAL_SYNC_WAIT_TIME+iAdditionalTimeoutInSeconds)).until(ExpectedConditions.elementToBeClickable(byInfo));
 		}catch(Exception e) {}
 	}
 
 	public void syncFor(WebElement webElement,int iAdditionalTimeoutInSeconds) {
 		try {
-			new WebDriverWait(getDriver(), GLOBAL_SYNC_WAIT_TIME+iAdditionalTimeoutInSeconds).until(ExpectedConditions.elementToBeClickable(webElement));
+			new WebDriverWait(getDriver(), Duration.ofSeconds(GLOBAL_SYNC_WAIT_TIME+iAdditionalTimeoutInSeconds)).until(ExpectedConditions.elementToBeClickable(webElement));
 		}catch(Exception e) {}
 	}
 	
 	public void pageLoadWait() {
 		try{
-			new WebDriverWait(getDriver(), GLOBAL_SYNC_WAIT_TIME).until(driver -> ((JavascriptExecutor) driver).executeScript("return document.readyState").equals("complete"));
+			new WebDriverWait(getDriver(),Duration.ofSeconds(GLOBAL_SYNC_WAIT_TIME)).until(driver -> ((JavascriptExecutor) driver).executeScript("return document.readyState").equals("complete"));
 		}catch(Exception e) {}
 	}
 }

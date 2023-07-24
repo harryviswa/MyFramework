@@ -3,3 +3,8 @@ build
 .gradle
 /target/
 test-output/
+allure-results/
+.DS_Store
+src/.DS_Store
+src/main/.DS_Store
+src/test/.DS_Store

@@ -2,12 +2,11 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="BasicSuite" parallel="methods"
 	data-provider-thread-count="2">
-	<test thread-count="3" name="MainTest">
-		<parameter name="browserToUse" value="chrome"></parameter>
+	<test thread-count="2" name="Search Test">
+		<parameter name="browserToUse" value="firefox"></parameter>
+		<parameter name="grid" value="false"></parameter>
 		<classes>
-			<class name="com.apps.booking.tests.SignInTest" />
-			<class name="com.apps.booking.tests.FlightBookingTest" />
-			<class name="com.apps.booking.tests.HotelBookingTest" />
+			<class name="com.apps.trial.tests.TrailTest" />
 		</classes>
-	</test> <!-- MainTest -->
-</suite> <!-- BasicSuite -->
+	</test>
+</suite> 
