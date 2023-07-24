@@ -36,7 +36,7 @@ public class ExcelUtils {
         }
         int rowCount = row.getLastCellNum();
         int columnCount = row.getLastCellNum();
-        for (int i = 1; i <= rowCount+1; i++) {
+        for (int i = 1; i <= rowCount; i++) {
             LinkedHashMap<String, String> singleRowData = new LinkedHashMap<String, String>();
             XSSFRow row1 = sheet.getRow(i);
             for (int j = 0; j < columnCount; j++) {

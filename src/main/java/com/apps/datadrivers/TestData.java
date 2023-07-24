@@ -20,5 +20,10 @@ public class TestData {
 	  public static Object[][] trailData() throws Exception {
 	        return ExcelUtils.getExcelAsObjects("google");
 	   }
+	
+	@DataProvider(name = "EmiratesData",parallel=true)
+	  public static Object[][] emiratesData() throws Exception {
+	        return ExcelUtils.getExcelAsObjects("emirates");
+	   }
 
 }

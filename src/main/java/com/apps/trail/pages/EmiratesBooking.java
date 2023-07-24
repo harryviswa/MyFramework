@@ -24,6 +24,7 @@ public class EmiratesBooking  extends CommonTestActions {
 	@FindBy(xpath="//span[text()='Returning' and not(contains(@class,'hidden'))]")
 	WebElement lbl_ReturningText;
 	
+	
 	public EmiratesBooking() {
 		PageFactory.initElements(new AjaxElementLocatorFactory(getDriver(),40), this);
 		pageLoadWait();
@@ -47,6 +48,17 @@ public class EmiratesBooking  extends CommonTestActions {
 
 		click(btn_searchFlight,"Search button");
 		assertStep(isWebElementPresent("//h1[contains(text(),'Make a booking')]",60), "Search Result Validation");
+	}
+	
+	public void selectBookHoliday() {
+		String pwindow=getDriver().getWindowHandle();
+		moveToElementAndClick("//span[text()='Book a holiday  ']/parent::a","Book a holiday link");
+		getDriver().getWindowHandles().forEach(x->{
+		 if(!x.equals(pwindow)) getDriver().switchTo().window(x);
+		});
+		assertStep(isWebElementPresent("//span[text()='Search Holidays']"),"Landing page validation");
+		getDriver().close();
+		getDriver().switchTo().window(pwindow);
 	}
 	
 }

@@ -32,8 +32,8 @@ public class ApiValidations {
 		String response="";
 		Response res=RestAssured.given().body(jsonBody).post(baseUrl);
 		response=res.getHeaders().toString();
-		if(res.statusCode()==201) System.out.println("Status Code: "+res.statusCode());
-		else System.out.println("Failed to post: "+res.statusCode()+" | "+response);
+		res.then().assertThat().statusCode(201);
+		System.out.println("Status Code: "+res.statusCode()+" | headers\n"+response);
 		return res.statusCode();
 	}
 	

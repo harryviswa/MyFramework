@@ -70,7 +70,7 @@ public abstract class CommonTestBase {
 			options.setCapability(CapabilityType.PLATFORM_NAME, Platform.MAC);
 			options.setCapability(CapabilityType.ACCEPT_INSECURE_CERTS, true);
 			options.setCapability(CapabilityType.PAGE_LOAD_STRATEGY, PageLoadStrategy.NORMAL);
-			setDriver(new ChromeDriver(options));
+			setDriver(seleniumGrid?(new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), options)):(new ChromeDriver(options)));
 			break;
 		case "firefox":
 		default:

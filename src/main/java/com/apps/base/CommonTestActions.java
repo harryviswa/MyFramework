@@ -79,6 +79,7 @@ public class CommonTestActions extends CommonTestBase {
 	}
 	
 	public void moveToElementAndClick(WebElement ele,String info) {
+		((JavascriptExecutor)getDriver()).executeScript("arguments[0].scrollIntoView();", ele);
 		Actions act=new Actions(getDriver());
 		act.moveToElement(ele, 2, 2);
 		act.click(ele);
