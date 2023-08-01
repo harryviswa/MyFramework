@@ -1,7 +1,6 @@
 package com.apps.trail.pages;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.LinkedHashMap;
 
 import org.openqa.selenium.WebElement;
