@@ -59,6 +59,7 @@ public class CommonTestActions extends CommonTestBase {
 		try {
 			findWebElement(byInfo).click();
 			consoleOutput("Clicked on "+strInfo.toUpperCase());
+			return;
 		}catch(Exception e) {
 			e.printStackTrace();
 			throwError("Unable to click on "+strInfo);

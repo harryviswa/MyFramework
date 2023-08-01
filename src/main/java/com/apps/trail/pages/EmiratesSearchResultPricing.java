@@ -1,8 +1,8 @@
 package com.apps.trail.pages;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.FindBys;
@@ -32,7 +32,7 @@ public class EmiratesSearchResultPricing  extends CommonTestActions {
 		optionalClick("//button[text()='Accept']", "Accept Terms");
 	}
 	
-	public void selectLowestPrice() {
+	public void selectLowestPrice(LinkedHashMap<String,String> data) {
 		assertStep(true, "Lowest Price Identified: "+  getText(lbl_lowestPrice));
 		moveToElementAndClick(lst_priceFilter.get(0),"Sort by price");
 		int[] i= {0};

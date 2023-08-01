@@ -35,15 +35,15 @@ public class TrailTest extends CommonTestActions {
     }
     
     
-    @Test
+    @Test(dataProvider="EmiratesData", dataProviderClass = com.apps.datadrivers.TestData.class)
     @Description("Select the search flight from homepage")
-    public void searchEmiratesWithData() {
+    public void searchEmiratesWithData(LinkedHashMap<String,String> data) {
     	tcm.setTestcaseNameInReports("Emirates home page custom search");
     	launch("https://www.emirates.com/");
     	EmiratesBooking book=new EmiratesBooking();
-    	book.enterBookingDetails("MAA","DXB","2872023","2282023",2,1,1);
+    	book.enterBookingDetails(data);
     	EmiratesSearchResultPricing search=new EmiratesSearchResultPricing();
-    	search.selectLowestPrice();
+    	search.selectLowestPrice(data);
     }
     
     @Test(enabled=false)

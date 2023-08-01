@@ -34,7 +34,7 @@ public class ExcelUtils {
         while (cellIterator.hasNext()) {
             columnHeader.add(cellIterator.next().getStringCellValue());
         }
-        int rowCount = row.getLastCellNum();
+        int rowCount = sheet.getLastRowNum();
         int columnCount = row.getLastCellNum();
         for (int i = 1; i <= rowCount; i++) {
             LinkedHashMap<String, String> singleRowData = new LinkedHashMap<String, String>();
