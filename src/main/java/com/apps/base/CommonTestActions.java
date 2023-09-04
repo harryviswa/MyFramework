@@ -23,14 +23,21 @@ public class CommonTestActions extends CommonTestBase {
 			e.printStackTrace(); 
 		}
 	}
+	
+	public void highlight(WebElement web) {
+		JavascriptExecutor js=(JavascriptExecutor)getDriver(); 
+		js.executeScript("arguments[0].style='border:green;border-style:dashed;border-size:1em'",web);
+	}
 
 	public WebElement findWebElement(By byInfo) {
 		syncFor(byInfo);
+		highlight(getDriver().findElement(byInfo));
 		return getDriver().findElement(byInfo);
 	}
 
 	public WebElement findWebElement(String strXpath) {
 		syncFor(By.xpath(strXpath));
+		highlight(getDriver().findElement(By.xpath(strXpath)));
 		return getDriver().findElement(By.xpath(strXpath));
 	}
 
